@@ -189,6 +189,10 @@ gl2svdquartets(dipes.filt_ind, outfile = "dipes_svd.nex",
   verbose = 3,
   outpath = getwd())
 
+
+#save your SNP data in a format that can be read on SNAPP to run the tree
+gl2snapp(dipes.filt_ind,outfile="dipes_snapp.nex",outpath = getwd())
+
 #For IQ-TREE, first you need to save your SNP data in fasta
 gl2fasta(dipes.filt_ind,outfile="dipes.fasta",verbose=3, outpath = getwd())
 
@@ -229,6 +233,12 @@ for(i in 1:length(seq.tmp)){
 write.fasta(seq.tmp,names=names(seq.tmp),nbchar=length(seq.tmp[[1]]),file.out="dipes_solved.fasta")
 
 #Now, use this fasta doc to run your tree
+
+
+#Export your data for extra analyses
+gl2structure(dipes.filt,outfile="dipes_snp_structure.str",outpath = getwd())
+gl2faststructure(dipes.filt,outfile="dipes_snp_fs.str",outpath = getwd())
+
 
 
 
@@ -297,11 +307,22 @@ ggplot(pcoa_bilin2, aes(x = PC1, y = PC2)) + #PC1 and PC2
 #### SAVING YOUR DATA #####
 ###########################
 
+bilin_ind<-bilin.filt
+pop(bilin_ind)<-indNames(bilin.filt)
+
+#Export your data for extra analyses
+gl2structure(bilin_ind,outfile="bilin_snp_structure.str",outpath = getwd())
+gl2faststructure(bilin_ind,outfile="bilin_snp_fs.str",outpath = getwd())
+#save a SNAPP file, that can also be used to run rangeexpansion
+gl2snapp(bilin_ind,outfile="bilin_snapp.nex",outpath = getwd())
+
+
 # Save your data script, command and objects to access it later
 # A good practice is to always create a project as save it when finished
 # use ?save for help
 
 save.image("~/Desktop/dipes_SNP_data.RData")
 saveRDS(object = dipes_SNP, file = "dipes_SNP_analyses.rds") #for single objects
+
 
 #Done!
